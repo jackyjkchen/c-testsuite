@@ -35,7 +35,6 @@ GCC_DICT=(
   ["2.95.3"]="$GNU9X_FLAG $C89_FLAG $GNU89_FLAG"
 )
 
-
 OLDGCC_LIST=(
   "2.91.66" "2.8.1" "2.7.2" "2.6.3" "2.5.8" "2.4.5" "2.3.3" "2.2.2" "2.1" "2.0"
 )
@@ -53,5 +52,6 @@ done
 for gcc in ${OLDGCC_LIST[@]}
 do
   echo CC="gcc-$gcc" CFLAGS="-O2" ./runtests.sh ./runtests.sh
-  CC="gcc-$gcc" CFLAGS="-O2" ./runtests.sh ./runtests.sh > results/gcc-$gcc.txt
+  CC="gcc-$gcc" CFLAGS="-O2" ./runtests.sh > results/gcc-$gcc.txt
 done
+
