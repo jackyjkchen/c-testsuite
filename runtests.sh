@@ -28,7 +28,6 @@ execute_tests() {
 
 run_test() {
   local case=${1}
-  echo Test:${case}
   if ! $CC $CFLAGS "${case}" -o "${case}.bin" >${case}.ccout 2>${case}.ccerr
   then
     return -1
