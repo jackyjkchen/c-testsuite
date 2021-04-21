@@ -1,0 +1,21 @@
+CC=gcc-4.2.4
+CFLAGS=-std=gnu99 -O2
+--- 00206.c.expected	2021-03-12 12:04:46.513507815 +0800
++++ 00206.c.output	2021-04-21 15:04:46.938631715 +0800
+@@ -1,5 +1,5 @@
+ abort = 111
+ abort = 222
+ abort = 333
+-abort = 222
+-abort = 111
++abort = 333
++abort = 333
+Summary
+Total:
+220
+Pass:
+215
+Fail:
+5
+Failed Cases:
+00162.c 00174.c 00206.c 00216.c 00219.c
