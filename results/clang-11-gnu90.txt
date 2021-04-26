@@ -1,0 +1,11 @@
+CC=clang-11
+CFLAGS=-std=gnu90 -O2
+Summary
+Total:
+220
+Pass:
+219
+Fail:
+1
+Failed Cases:
+00162.c
