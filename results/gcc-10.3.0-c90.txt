@@ -1,4 +1,4 @@
-CC=gcc-8.4.0
+CC=gcc-10.3.0
 CFLAGS=-std=c90 -O2
 Summary
 Total:
