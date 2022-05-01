@@ -1,0 +1,26 @@
+CC=i586-legacy-linux-gnulibc1-gcc-3.4.6
+CFLAGS=-std=gnu99 -O2
+--- 00206.c.expected	2022-03-27 23:16:38.264960334 +0800
++++ 00206.c.output	2022-05-01 21:29:52.528967777 +0800
+@@ -1,5 +1,5 @@
+ abort = 111
+ abort = 222
+ abort = 333
+-abort = 222
+-abort = 111
++abort = 333
++abort = 333
+--- 00212.c.expected	2022-03-27 23:16:38.265960264 +0800
++++ 00212.c.output	2022-05-01 21:29:53.002934789 +0800
+@@ -1 +1 @@
+-Ok
++KO no __*LP*__ defined.
+Summary
+Total:
+220
+Pass:
+212
+Fail:
+8
+Failed Cases:
+00104.c 00162.c 00174.c 00204.c 00206.c 00212.c 00216.c 00219.c
