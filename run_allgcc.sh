@@ -12,6 +12,7 @@ C89_FLAG="c89"
 GNU89_FLAG="gnu89"
 C9X_FLAG="c9x"
 GNU9X_FLAG="gnu9x"
+TARGET_PREFIX="${TARGET_PREFIX}"
 
 GCC_DICT=(
   ["10.3.0"]="$C17_FLAG $C11_FLAG $C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
@@ -47,14 +48,14 @@ do
   cflags=${GCC_DICT[$gcc]}
   for cflag in ${cflags[@]}
   do
-    echo CC="gcc-$gcc" CFLAGS="-std=$cflag -O2" ./runtests.sh
-    CC="gcc-$gcc" CFLAGS="-std=$cflag -O2" ./runtests.sh > results/gcc-$gcc-$cflag.txt
+    echo CC="${TARGET_PREFIX}gcc-$gcc" CFLAGS="-std=$cflag -O2" ./runtests.sh
+    CC="${TARGET_PREFIX}gcc-$gcc" CFLAGS="-std=$cflag -O2" ./runtests.sh > results/gcc-$gcc-$cflag.txt
   done
 done
 
 for gcc in ${OLDGCC_LIST[@]}
 do
-  echo CC="gcc-$gcc" CFLAGS="-O2" ./runtests.sh ./runtests.sh
-  CC="gcc-$gcc" CFLAGS="-O2" ./runtests.sh > results/gcc-$gcc.txt
+  echo CC="${TARGET_PREFIX}gcc-$gcc" CFLAGS="-O2" ./runtests.sh ./runtests.sh
+  CC="${TARGET_PREFIX}gcc-$gcc" CFLAGS="-O2" ./runtests.sh > results/gcc-$gcc.txt
 done
 
