@@ -1,0 +1,11 @@
+CC=pcc
+CFLAGS=-O2
+Summary
+Total:
+220
+Pass:
+207
+Fail:
+13
+Failed Cases:
+00162.c 00170.c 00174.c 00200.c 00202.c 00204.c 00206.c 00210.c 00211.c 00212.c 00213.c 00216.c 00219.c
