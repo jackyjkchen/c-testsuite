@@ -43,19 +43,23 @@ OLDGCC_LIST=(
   "2.91.66" "2.8.1" "2.7.2" "2.6.3" "2.5.8" "2.4.5" "2.3.3" "2.2.2" "2.1" "2.0" "1.42"
 )
 
-for gcc in ${!GCC_DICT[@]}
+for ver in ${!GCC_DICT[@]}
 do
-  cflags=${GCC_DICT[$gcc]}
+  cflags=${GCC_DICT[$ver]}
   for cflag in ${cflags[@]}
   do
-    echo CC="${TARGET_PREFIX}gcc-$gcc" CFLAGS="-std=$cflag -O2" ./runtests.sh
-    CC="${TARGET_PREFIX}gcc-$gcc" CFLAGS="-std=$cflag -O2" ./runtests.sh > results/gcc-$gcc-$cflag.txt
+    echo CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-std=$cflag -O2" ./runtests.sh
+    CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-std=$cflag -O2" ./runtests.sh > results/gcc-$ver-$cflag.txt
   done
+  echo CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2" ./runtests.sh
+  CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2" ./runtests.sh > results/g++-$ver.txt
 done
 
-for gcc in ${OLDGCC_LIST[@]}
+for ver in ${OLDGCC_LIST[@]}
 do
-  echo CC="${TARGET_PREFIX}gcc-$gcc" CFLAGS="-O2" ./runtests.sh ./runtests.sh
-  CC="${TARGET_PREFIX}gcc-$gcc" CFLAGS="-O2" ./runtests.sh > results/gcc-$gcc.txt
+  echo CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-O2" ./runtests.sh
+  CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-O2" ./runtests.sh > results/gcc-$ver.txt
+  echo CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2" ./runtests.sh
+  CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2" ./runtests.sh > results/g++-$ver.txt
 done
 
