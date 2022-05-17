@@ -1,0 +1,11 @@
+CC=gcc-4.9.4
+CFLAGS=-std=gnu99 -O2
+Summary
+Total:
+220
+Pass:
+219
+Fail:
+1
+Failed Cases:
+00216.c
