@@ -1,0 +1,16 @@
+CC=gcc-4.5.4
+CFLAGS=-std=c99 -O2
+--- 00212.c.expected	2022-05-21 21:49:47.000000000 +0800
++++ 00212.c.output	2022-05-22 11:16:09.000000000 +0800
+@@ -1 +1 @@
+-Ok
++KO no __*LP*__ defined.
+Summary
+Total:
+220
+Pass:
+215
+Fail:
+5
+Failed Cases:
+00046.c 00050.c 00212.c 00216.c 00219.c
