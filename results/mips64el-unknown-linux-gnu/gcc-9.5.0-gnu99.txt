@@ -1,4 +1,4 @@
-CC=gcc-9.4.0
+CC=gcc-9.5.0
 CFLAGS=-std=gnu99 -O2
 Summary
 Total:
