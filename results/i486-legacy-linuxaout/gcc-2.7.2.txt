@@ -1,11 +1,102 @@
 CC=i486-legacy-linuxaout-gcc-2.7.2
 CFLAGS=-O2
+--- 00204.c.expected	2022-11-10 13:16:08.315703461 +0800
++++ 00204.c.output	2023-02-13 13:08:50.387672421 +0800
+@@ -102,58 +102,58 @@
+ 0
+ abcd
+ abcd0000
+-abcd00000000
+-abcd000000000000
++0
++0
++ffffabcd
++abcdffff
+ ffffabcd
+ abcdffff
+-ffffffffffffabcd
+-ffffffffabcdffff
+-ffffabcdffffffff
+-abcdffffffffffff
++ffffffff
++ffffffff
+ aaaaaaaa
+-5555555555555555
++55555555
+ 77777777
+-3333333333333333
++33333333
+ f8f8f8f8
+-1e1e1e1e1e1e1e1e
++1e1e1e1e
+ 3f803f80
+-1ff01ff01ff01ff
++1ff01ff
+ 7fffc0
+-3fff80003fff800
+-7fffffffffe00
++3fff800
++fffffe00
+ abcd1234
+-abcd00001234
+-abcd000000001234
+-abcd12340000
+-abcd000012340000
+-abcd123400000000
+-ffffffffabcd1234
+-ffffabcdffff1234
+-abcdffffffff1234
+-ffffabcd1234ffff
+-abcdffff1234ffff
+-abcd1234ffffffff
+-ffffef0123456789
+-abcdef012345ffff
+-abcdef0123456789
++1234
++1234
++12340000
++12340000
++0
++abcd1234
++ffff1234
++ffff1234
++1234ffff
++1234ffff
++ffffffff
++23456789
++2345ffff
++23456789
+ 3e8
+ 3e8
+ 463
+ 36d
+-fffffffffffff3e9
++fffff3e9
+ 7b3e8
+ 3421
+ ffffd3af
+ fffffc17
+-fffffffffffffc18
++fffffc18
++fffffc93
+ fffffc93
+-fffffffffffffc93
+ 0
+ 3e8
+ 3e8
+ ffffffff
+ 3e8
+-fffffffffffffc17
++fffffc17
+ e0
+ 3f8
+ 318
 Summary
 Total:
 220
 Pass:
-190
+191
 Fail:
-30
+29
 Failed Cases:
-00046.c 00050.c 00056.c 00083.c 00084.c 00085.c 00097.c 00104.c 00129.c 00132.c 00154.c 00162.c 00163.c 00167.c 00173.c 00174.c 00175.c 00176.c 00185.c 00187.c 00198.c 00204.c 00206.c 00210.c 00211.c 00212.c 00214.c 00216.c 00219.c 00220.c
+00046.c 00050.c 00056.c 00083.c 00084.c 00085.c 00097.c 00129.c 00132.c 00154.c 00162.c 00163.c 00167.c 00173.c 00174.c 00175.c 00176.c 00185.c 00187.c 00198.c 00204.c 00206.c 00210.c 00211.c 00212.c 00214.c 00216.c 00219.c 00220.c
