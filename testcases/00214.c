@@ -1,6 +1,12 @@
 /* Check some way in where code suppression caused various
    miscompilations.  */
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern int printf (const char *, ...);
+#ifdef __cplusplus
+}
+#endif
 typedef unsigned long size_t;
 
 size_t _brk_start, _brk_end;

@@ -1,11 +1,11 @@
 CC=gcc-4.0.4
-CFLAGS=-std=gnu89 -O2
+CFLAGS=-std=gnu89 -O2 -lm
 Summary
 Total:
 220
 Pass:
-213
+214
 Fail:
-7
+6
 Failed Cases:
-00162.c 00174.c 00206.c 00211.c 00212.c 00216.c 00219.c
+00162.c 00206.c 00211.c 00212.c 00216.c 00219.c

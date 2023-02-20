@@ -1,4 +1,10 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern int printf(const char *format, ...);
+#ifdef __cplusplus
+}
+#endif
 static void kb_wait_1(void)
 {
     unsigned long timeout = 2;

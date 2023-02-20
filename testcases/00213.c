@@ -1,7 +1,13 @@
 /* This checks various ways of dead code inside if statements
    where there are non-obvious ways of how the code is actually
    not dead due to reachable by labels.  */
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern int printf (const char *, ...);
+#ifdef __cplusplus
+}
+#endif
 static void kb_wait_1(void)
 {
   unsigned long timeout = 2;

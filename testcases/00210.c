@@ -23,7 +23,13 @@ int ATTR actual_function() {
   return 42;
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern int printf (const char *, ...);
+#ifdef __cplusplus
+}
+#endif
 int main()
 {
     void *function_pointer = &actual_function;

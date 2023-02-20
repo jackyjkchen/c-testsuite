@@ -30,7 +30,13 @@ enum cplus_tree_code {
   LAST_CPLUS_TREE_CODE
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern int printf(const char *, ...);
+#ifdef __cplusplus
+}
+#endif
 int blah(){return 0;}
 
 int convert_like_real (tree convs)
