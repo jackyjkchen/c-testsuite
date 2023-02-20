@@ -1,5 +1,5 @@
 CC=i586-legacy-linux-gnulibc1-gcc-3.4.6
-CFLAGS=-std=c89 -O2
+CFLAGS=-std=c89 -O2 -lm
 Summary
 Total:
 220
