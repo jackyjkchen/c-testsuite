@@ -28,15 +28,15 @@ execute_tests() {
 
 run_test() {
   local case=${1}
-  if ! $CC $CFLAGS "${case}" -o "${case}.bin" >${case}.ccout 2>${case}.ccerr
+  if ! $CC $CFLAGS ${case} -o ${case}.bin >${case}.ccout 2>${case}.ccerr
   then
     return -1
   fi
-  if ! "./${case}.bin" > "${case}.output" 2>&1
+  if ! ./${case}.bin > ${case}.output 2>&1
   then
     return -1
   fi
-  if ! diff -u "${case}.expected" "${case}.output"
+  if ! diff -u ${case}.expected ${case}.output
   then
     return -1
   fi
