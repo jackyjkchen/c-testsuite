@@ -204,10 +204,10 @@ def run_test(result, lock, case):
     result[case]["ret"] = False
     result[case]["output"] = ""
     lock.release()
-    ret, _ = get_status_output(extract_env('$CC $CFLAGS {case} -o {case}.bin >{case}.ccout 2>{case}.ccerr'.format(case = case)))
+    ret, _ = get_status_output(extract_env('$CC {case} $CFLAGS -o {case}.bin >{case}.ccout 2>{case}.ccerr'.format(case = case)))
     if ret != 0:
         return False
-    ret, _ = get_status_output(extract_env('./{case}.bin > {case}.output 2>&1'.format(case = case)))
+    ret, _ = get_status_output('./{case}.bin > {case}.output 2>&1'.format(case = case))
     if ret != 0:
         return False
     ret, output = get_status_output('diff -u {case}.expected {case}.output'.format(case = case))

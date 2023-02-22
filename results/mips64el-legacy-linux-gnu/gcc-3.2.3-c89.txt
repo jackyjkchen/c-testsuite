@@ -1,5 +1,5 @@
 CC=gcc-3.2.3
-CFLAGS=-std=c89 -O2
+CFLAGS=-std=c89 -O2 -lm
 Summary
 Total:
 220
