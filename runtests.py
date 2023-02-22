@@ -69,77 +69,35 @@ def get_cpu_count():
     except:
         return 1
 
-class ThreadRWLock(object):
-    def __init__(self):
-        self._lock = threading.Condition(threading.Lock())
-        self._readers = 0
-
-    def acquire_read(self):
-        self._lock.acquire()
-        self._readers += 1
-        self._lock.release()
-
-    def release_read(self):
-        self._lock.acquire()
-        if self._readers == 0:
-            self._lock.release()
-            raise RuntimeError('the lock is not acquired')
-        self._readers -= 1
-        if self._readers == 0:
-            self._lock.notify_all()
-        self._lock.release()
-
-    def acquire_write(self):
-        self._lock.acquire()
-        while self._readers > 0:
-            self._lock.wait()
-
-    def release_write(self):
-        self._lock.release()
-
-    def acquire(self):
-        self.acquire_write()
-
-    def release(self):
-        self.release_write()
-
-
 class WorkerThread(threading.Thread):
     def __init__(self, task_queue, cond):
         super(self.__class__, self).__init__()
         self._task_queue = task_queue
         self._cond = cond
         self._exit = False
-        self._active = False
         self.start()
 
     def run(self):
         while True:
             try:
                 func, args, kwargs = self._task_queue.get(block=False)
-                self._active = True
                 try:
                     func(*args, **kwargs)
                 except:
                     pass
-                self._active = False
                 self._task_queue.task_done()
-            except:
+            except queue.Empty:
                 self._cond.acquire()
                 if self._exit:
                     self._cond.release()
                     break
-                else:
-                    self._cond.wait()
+                self._cond.wait()
                 self._cond.release()
 
     def exit(self):
         self._cond.acquire()
         self._exit = True
         self._cond.release()
-
-    def is_active(self):
-        return self._active
 
 class ThreadPool(object):
     def __init__(self, worker_num=0):
@@ -150,7 +108,7 @@ class ThreadPool(object):
         self.worker_class = None
         self.task_queue = queue.Queue()
         self.cond = threading.Condition(threading.Lock())
-        self.ctrl_lock = ThreadRWLock()
+        self.ctrl_lock = threading.Lock()
 
     def __del__(self):
         self.wait_all_thrd()
@@ -160,29 +118,24 @@ class ThreadPool(object):
         if not self.workers:
             for _ in range(self.worker_num):
                 self.workers.append(WorkerThread(self.task_queue, self.cond))
+        self.cond.acquire()
+        self.cond.notify_all()
+        self.cond.release()
         self.ctrl_lock.release()
 
     def add_task(self, func, *args, **kwargs):
         self.task_queue.put((func, args, kwargs))
         self.cond.acquire()
-        self.cond.notify_all()
+        self.cond.notify()
         self.cond.release()
 
     def get_worker_num(self):
         return self.worker_num
 
-    def get_active_worker_num(self):
-        self.ctrl_lock.acquire()
-        sum = 0
-        for worker in self.workers:
-            if worker.is_active():
-                sum += 1
-        self.ctrl_lock.release()
-        return sum
-    
     def wait_all_thrd(self):
         try:
             self.ctrl_lock.acquire()
+            self.task_queue.join()
             for worker in self.workers:
                 worker.exit()
             self.cond.acquire()
@@ -192,34 +145,30 @@ class ThreadPool(object):
                 if worker.is_alive():
                     worker.join()
             self.workers = []
-        except:
-            raise
         finally:
             self.ctrl_lock.release()
 
-
 def run_test(result, lock, case):
-    lock.acquire()
-    result[case] = {}
-    result[case]["ret"] = False
-    result[case]["output"] = ""
-    lock.release()
-    ret, _ = get_status_output(extract_env('$CC {case} $CFLAGS -o {case}.bin >{case}.ccout 2>{case}.ccerr'.format(case = case)))
-    if ret != 0:
-        return False
-    ret, _ = get_status_output('./{case}.bin > {case}.output 2>&1'.format(case = case))
-    if ret != 0:
-        return False
-    ret, output = get_status_output('diff -u {case}.expected {case}.output'.format(case = case))
-    if ret != 0:
+    result_case = {}
+    result_case["ret"] = False
+    result_case["output"] = ""
+    try:
+        ret, _ = get_status_output(extract_env('$CC {case} $CFLAGS -o {case}.bin >{case}.ccout 2>{case}.ccerr'.format(case = case)))
+        if ret != 0:
+            return False
+        ret, _ = get_status_output('./{case}.bin > {case}.output 2>&1'.format(case = case))
+        if ret != 0:
+            return False
+        ret, _ = get_status_output('diff -u {case}.expected {case}.output > {case}.outdiff 2>/dev/null'.format(case = case))
+        if ret != 0:
+            result_case["output"] = open('{case}.outdiff'.format(case = case)).read().strip()
+            return False
+        result_case["ret"] = True
+        return True
+    finally:
         lock.acquire()
-        result[case]["output"] = output
+        result[case] = result_case
         lock.release()
-        return False
-    lock.acquire()
-    result[case]["ret"] = True
-    lock.release()
-    return True
 
 def execute_tests():
     print(extract_env('CC=${CC}'))
@@ -233,15 +182,15 @@ def execute_tests():
     cwd=os.getcwd()
     os.chdir('testcases')
     result = {}
-    lock = ThreadRWLock()
+    lock = threading.Lock()
     thrd_pool = ThreadPool()
 
     cases = glob.glob('*.c')
     cases.sort()
     TOTAL=len(cases)
-    thrd_pool.start_pool()
     for case in cases:
         thrd_pool.add_task(run_test, result, lock, case)
+    thrd_pool.start_pool()
     thrd_pool.wait_all_thrd()
     for case in cases:
         if result[case]["ret"]:

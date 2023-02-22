@@ -1,5 +1,5 @@
 CC=gcc-4.9.4
-CFLAGS=-std=c99 -O2
+CFLAGS=-std=c99 -O2 -lm
 Summary
 Total:
 220

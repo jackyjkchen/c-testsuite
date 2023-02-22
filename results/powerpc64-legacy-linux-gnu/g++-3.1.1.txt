@@ -1,5 +1,5 @@
 CC=g++-3.1.1
-CFLAGS=-O2
+CFLAGS=-O2 -lm
 Summary
 Total:
 220
