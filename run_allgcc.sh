@@ -15,6 +15,7 @@ GNU9X_FLAG="gnu9x"
 TARGET_PREFIX="${TARGET_PREFIX}"
 
 GCC_DICT=(
+  ["12"]="$C17_FLAG $C11_FLAG $C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
   ["11"]="$C17_FLAG $C11_FLAG $C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
   ["10"]="$C17_FLAG $C11_FLAG $C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
   ["9.5.0"]="$C17_FLAG $C11_FLAG $C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
@@ -49,18 +50,18 @@ do
   cflags=${GCC_DICT[$ver]}
   for cflag in ${cflags[@]}
   do
-    echo CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-std=$cflag -O2 -lm" ./runtests.sh
-    CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-std=$cflag -O2 -lm" ./runtests.sh > results/${CC_TARGET}/gcc-$ver-$cflag.txt
+    echo CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-std=$cflag -O2 -lm" ./runtests.py
+    CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-std=$cflag -O2 -lm" ./runtests.py > results/${CC_TARGET}/gcc-$ver-$cflag.txt
   done
-  echo CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2 -lm" ./runtests.sh
-  CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2 -lm" ./runtests.sh > results/${CC_TARGET}/g++-$ver.txt
+  echo CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2 -lm" ./runtests.py
+  CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2 -lm" ./runtests.py > results/${CC_TARGET}/g++-$ver.txt
 done
 
 for ver in ${OLDGCC_LIST[@]}
 do
-  echo CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-O2 -lm" ./runtests.sh
-  CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-O2 -lm" ./runtests.sh > results/${CC_TARGET}/gcc-$ver.txt
-  echo CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2 -lm" ./runtests.sh
-  CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2 -lm" ./runtests.sh > results/${CC_TARGET}/g++-$ver.txt
+  echo CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-O2 -lm" ./runtests.py
+  CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-O2 -lm" ./runtests.py > results/${CC_TARGET}/gcc-$ver.txt
+  echo CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2 -lm" ./runtests.py
+  CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2 -lm" ./runtests.py > results/${CC_TARGET}/g++-$ver.txt
 done
 

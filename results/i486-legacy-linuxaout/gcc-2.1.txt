@@ -1,5 +1,5 @@
 CC=i486-legacy-linuxaout-gcc-2.1
-CFLAGS=-O2
+CFLAGS=-O2 -lm
 Summary
 Total:
 220
