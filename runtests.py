@@ -21,7 +21,14 @@ def extract_env(env):
     return os.path.expandvars(env)
 
 def _get_cpu_count_linux():
-    s, r = get_status_output("LANG=C lscpu | grep 'CPU(s):' | grep -v 'NUMA' | awk '{print$2}'")
+    s, r = get_status_output("echo $((`cat /sys/devices/system/cpu/online |awk -F '-' '{print$2}'` + 1))")
+    if s != 0:
+        raise Exception(str((s, r)))
+    else:
+        return int(r)
+
+def _get_cpu_count_cygwin():
+    s, r = get_status_output('cat /proc/cpuinfo | grep process | wc -l')
     if s != 0:
         raise Exception(str((s, r)))
     else:
@@ -58,7 +65,7 @@ def get_cpu_count():
         elif 'bsd' in sys.platform:
             return _get_cpu_count_bsd()
         elif 'cygwin' in sys.platform:
-            return _get_cpu_count_linux()
+            return _get_cpu_count_cygwin()
         elif 'darwin' in sys.platform:
             return _get_cpu_count_osx()
         elif 'sunos5' in sys.platform:
