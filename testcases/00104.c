@@ -14,7 +14,7 @@ main()
 		return 1;
 	
 	l = ~l;
-	if (x != 0xffffffffffffffff)
+	if (x != 0xffffffffffffffffLL)
 		return 2;
 
 	

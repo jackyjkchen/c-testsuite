@@ -5,6 +5,7 @@
 import os
 import sys
 import glob
+import subprocess
 if sys.version_info[0] >= 3:
     import queue as queue
     import subprocess as command
@@ -124,8 +125,8 @@ class ThreadPool(object):
         self.ctrl_lock.release()
 
     def add_task(self, func, *args, **kwargs):
-        self.task_queue.put((func, args, kwargs))
         self.cond.acquire()
+        self.task_queue.put((func, args, kwargs))
         self.cond.notify()
         self.cond.release()
 
@@ -135,7 +136,6 @@ class ThreadPool(object):
     def wait_all_thrd(self):
         try:
             self.ctrl_lock.acquire()
-            self.task_queue.join()
             for worker in self.workers:
                 worker.exit()
             self.cond.acquire()
@@ -148,18 +148,23 @@ class ThreadPool(object):
         finally:
             self.ctrl_lock.release()
 
+def command_runner_nopipe(command):
+    process = subprocess.Popen(command, stdin=None, stdout=None, stderr=None, shell=True, close_fds=True)
+    process.communicate()
+    return process.returncode
+
 def run_test(result, lock, case):
     result_case = {}
     result_case["ret"] = False
     result_case["output"] = ""
     try:
-        ret, _ = get_status_output(extract_env('$CC {case} $CFLAGS -o {case}.bin >{case}.ccout 2>{case}.ccerr'.format(case = case)))
+        ret = command_runner_nopipe(extract_env('$CC {case} $CFLAGS -o {case}.bin >{case}.ccout 2>{case}.ccerr'.format(case = case)))
         if ret != 0:
             return False
-        ret, _ = get_status_output('./{case}.bin > {case}.output 2>&1'.format(case = case))
+        ret = command_runner_nopipe('./{case}.bin > {case}.output 2>&1'.format(case = case))
         if ret != 0:
             return False
-        ret, _ = get_status_output('diff -u {case}.expected {case}.output > {case}.outdiff 2>/dev/null'.format(case = case))
+        ret = command_runner_nopipe('diff -u {case}.expected {case}.output >{case}.outdiff 2>/dev/null'.format(case = case))
         if ret != 0:
             result_case["output"] = open('{case}.outdiff'.format(case = case)).read().strip()
             return False
