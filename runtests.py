@@ -43,7 +43,6 @@ class ThreadPool(object):
     def __init__(self, worker_num=os.cpu_count()):
         self.worker_num = int(worker_num)
         self.workers = []
-        self.worker_class = None
         self.task_queue = queue.Queue()
         self.cond = threading.Condition(threading.Lock())
         self.ctrl_lock = threading.Lock()
@@ -56,9 +55,6 @@ class ThreadPool(object):
         if not self.workers:
             for _ in range(self.worker_num):
                 self.workers.append(WorkerThread(self.task_queue, self.cond))
-        self.cond.acquire()
-        self.cond.notify_all()
-        self.cond.release()
         self.ctrl_lock.release()
 
     def add_task(self, func, *args, **kwargs):
