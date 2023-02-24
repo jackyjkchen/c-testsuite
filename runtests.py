@@ -1,81 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# python deps
 import os
 import sys
 import glob
-import subprocess
-if sys.version_info[0] >= 3:
-    import queue as queue
-    import subprocess as command
-else:
-    import Queue as queue
-    import commands as command
+import queue
 import threading
-
-def get_status_output(cmd):
-    return command.getstatusoutput(cmd)
-
-def extract_env(env):
-    return os.path.expandvars(env)
-
-def _get_cpu_count_linux():
-    s, r = get_status_output("echo $((`cat /sys/devices/system/cpu/online |awk -F '-' '{print$2}'` + 1))")
-    if s != 0:
-        raise Exception(str((s, r)))
-    else:
-        return int(r)
-
-def _get_cpu_count_cygwin():
-    s, r = get_status_output('cat /proc/cpuinfo | grep process | wc -l')
-    if s != 0:
-        raise Exception(str((s, r)))
-    else:
-        return int(r)
-
-def _get_cpu_count_bsd():
-    s, r = get_status_output('sysctl -n hw.ncpu')
-    if s != 0:
-        raise Exception(str((s, r)))
-    else:
-        return int(r)
-
-def _get_cpu_count_osx():
-    s, r = get_status_output('sysctl -n hw.logicalcpu')
-    if s != 0:
-        raise Exception(str((s, r)))
-    else:
-        return int(r)
-
-def _get_cpu_count_solaris():
-    s, r = get_status_output('kstat -m cpu_info | egrep "module: cpu_info" | wc -l')
-    if s != 0:
-        raise Exception(str((s, r)))
-    else:
-        return int(r)
-
-def _get_cpu_count_win32():
-    return int(os.environ['NUMBER_OF_PROCESSORS'])
-
-def get_cpu_count():
-    try:
-        if 'linux' in sys.platform:
-            return _get_cpu_count_linux()
-        elif 'bsd' in sys.platform:
-            return _get_cpu_count_bsd()
-        elif 'cygwin' in sys.platform:
-            return _get_cpu_count_cygwin()
-        elif 'darwin' in sys.platform:
-            return _get_cpu_count_osx()
-        elif 'sunos5' in sys.platform:
-            return _get_cpu_count_solaris()
-        elif 'win32' in sys.platform:
-            return _get_cpu_count_win32()
-        else:
-            return 1
-    except:
-        return 1
+import subprocess
 
 class WorkerThread(threading.Thread):
     def __init__(self, task_queue, cond):
@@ -92,7 +23,8 @@ class WorkerThread(threading.Thread):
                 try:
                     func(*args, **kwargs)
                 except:
-                    pass
+                    import traceback
+                    sys.stderr.write('%s%s' % (traceback.format_exc(), os.linesep))
                 self._task_queue.task_done()
             except queue.Empty:
                 self._cond.acquire()
@@ -108,9 +40,7 @@ class WorkerThread(threading.Thread):
         self._cond.release()
 
 class ThreadPool(object):
-    def __init__(self, worker_num=0):
-        if worker_num == 0:
-            worker_num = get_cpu_count()
+    def __init__(self, worker_num=os.cpu_count()):
         self.worker_num = int(worker_num)
         self.workers = []
         self.worker_class = None
@@ -155,36 +85,43 @@ class ThreadPool(object):
         finally:
             self.ctrl_lock.release()
 
-def command_runner_nopipe(command):
-    process = subprocess.Popen(command, stdin=None, stdout=None, stderr=None, shell=True, close_fds=True)
-    process.communicate()
-    return process.returncode
-
 def run_test(result, lock, case):
     result_case = {}
     result_case["ret"] = False
     result_case["output"] = ""
-    try:
-        ret = command_runner_nopipe(extract_env('$CC {case} $CFLAGS -o {case}.bin >{case}.ccout 2>{case}.ccerr'.format(case = case)))
-        if ret != 0:
-            return False
-        ret = command_runner_nopipe('./{case}.bin > {case}.output 2>&1'.format(case = case))
-        if ret != 0:
-            return False
-        ret = command_runner_nopipe('diff -u {case}.expected {case}.output >{case}.outdiff 2>/dev/null'.format(case = case))
-        if ret != 0:
-            result_case["output"] = open('{case}.outdiff'.format(case = case)).read().strip()
-            return False
-        result_case["ret"] = True
-        return True
-    finally:
-        lock.acquire()
-        result[case] = result_case
-        lock.release()
+    process = None
+    while True:
+        try:
+            case_ccout = open('{case}.ccout'.format(case = case), 'w')
+            case_ccerr = open('{case}.ccerr'.format(case = case), 'w')
+            process = subprocess.Popen(os.path.expandvars('$CC {case} $CFLAGS -o {case}.bin'.format(case = case)).split(' '), stdin=open(os.devnull), stdout=case_ccout, stderr=case_ccerr, shell=False, close_fds=True)
+            process.communicate(60)
+            if process.returncode != 0:
+                return False
+            case_output = open('{case}.output'.format(case = case), 'w')
+            process = subprocess.Popen(['./{case}.bin'.format(case = case)], stdin=open(os.devnull), stdout=case_output, stderr=case_output, shell=False, close_fds=True)
+            process.communicate(60)
+            if process.returncode != 0:
+                return False
+            case_outdiff = open('{case}.outdiff'.format(case = case), 'w')
+            process = subprocess.Popen('diff -u {case}.expected {case}.output'.format(case = case).split(' '), stdin=open(os.devnull), stdout=case_outdiff, stderr=open(os.devnull, 'w'), shell=False, close_fds=True)
+            process.communicate(60)
+            if process.returncode != 0:
+                result_case["output"] = open('{case}.outdiff'.format(case = case)).read().strip()
+                return False
+            result_case["ret"] = True
+            return True
+        except subprocess.TimeoutExpired:
+            process.kill()
+            sys.stderr.write('Retry hang, case: %s%s' % (case, os.linesep))
+        finally:
+            lock.acquire()
+            result[case] = result_case
+            lock.release()
 
 def execute_tests():
-    print(extract_env('CC=${CC}'))
-    print(extract_env('CFLAGS=${CFLAGS}'))
+    print(os.path.expandvars('CC=${CC}'))
+    print(os.path.expandvars('CFLAGS=${CFLAGS}'))
 
     TOTAL=0
     PASS=0
@@ -205,13 +142,12 @@ def execute_tests():
     thrd_pool.start_pool()
     thrd_pool.wait_all_thrd()
     for case in cases:
-        if result[case]["ret"]:
-            PASS += 1
-        else:
+        if not result[case]["ret"]:
             FAIL += 1
             if result[case]["output"]:
                 print(result[case]["output"])
             FAIL_CASES.append(case)
+    PASS = TOTAL - FAIL
     print('Summary')
     print('Total:')
     print(TOTAL)
