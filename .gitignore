@@ -1,0 +1,14 @@
+*.a
+*.dll
+*.exe
+*.o
+*.orig
+*.out
+*.rej
+*.so
+*.ccout
+*.ccerr
+*.bin
+*.output
+*.outdiff
+*.txt
