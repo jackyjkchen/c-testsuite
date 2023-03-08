@@ -1,0 +1,11 @@
+CC=x86_64-w64-mingw32-gcc-4.9.4
+CFLAGS=-std=c11 -O2 -lm -static
+Summary
+Total:
+220
+Pass:
+219
+Fail:
+1
+Failed Cases:
+00216.c

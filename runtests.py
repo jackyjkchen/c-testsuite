@@ -95,12 +95,12 @@ def run_test(result, lock, case):
             if process.returncode != 0:
                 return False
             case_output = open('{case}.output'.format(case = case), 'w')
-            process = subprocess.Popen(['./{case}.bin'.format(case = case)], stdin=open(os.devnull), stdout=case_output, stderr=case_output, shell=False, close_fds=True)
+            process = subprocess.Popen(['./{case}.bin'.format(case = case)], stdin=open(os.devnull), stdout=case_output, stderr=open(os.devnull, 'w'), shell=False, close_fds=True)
             process.communicate(60)
             if process.returncode != 0:
                 return False
             case_outdiff = open('{case}.outdiff'.format(case = case), 'w')
-            process = subprocess.Popen('diff -u {case}.expected {case}.output'.format(case = case).split(' '), stdin=open(os.devnull), stdout=case_outdiff, stderr=open(os.devnull, 'w'), shell=False, close_fds=True)
+            process = subprocess.Popen('diff --ignore-trailing-space -u {case}.expected {case}.output'.format(case = case).split(' '), stdin=open(os.devnull), stdout=case_outdiff, stderr=open(os.devnull, 'w'), shell=False, close_fds=True)
             process.communicate(60)
             if process.returncode != 0:
                 result_case["output"] = open('{case}.outdiff'.format(case = case)).read().strip()

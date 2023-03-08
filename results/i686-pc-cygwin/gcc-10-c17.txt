@@ -1,0 +1,11 @@
+CC=i686-pc-cygwin-gcc-10
+CFLAGS=-std=c17 -O2 -lm -static
+Summary
+Total:
+220
+Pass:
+220
+Fail:
+0
+Failed Cases:
+

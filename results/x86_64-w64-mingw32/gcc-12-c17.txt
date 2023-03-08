@@ -1,0 +1,11 @@
+CC=x86_64-w64-mingw32-gcc-12
+CFLAGS=-std=c17 -O2 -lm -static
+Summary
+Total:
+220
+Pass:
+220
+Fail:
+0
+Failed Cases:
+

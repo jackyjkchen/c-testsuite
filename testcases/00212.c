@@ -3,7 +3,7 @@
 int
 main()
 {
-#if defined(__LLP64__)
+#if defined(__LLP64__) || defined(_WIN64)
 	if (sizeof(short) == 2
 	    && sizeof(int) == 4
 	    && sizeof(long int) == 4

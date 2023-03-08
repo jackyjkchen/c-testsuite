@@ -1,0 +1,26 @@
+CC=i686-legacy-mingw32-gcc-4.1.2
+CFLAGS=-std=c99 -O2 -lm -static
+--- 00206.c.expected	2022-11-10 13:16:08.316703411 +0800
++++ 00206.c.output	2023-03-08 19:35:50.706674902 +0800
+@@ -1,5 +1,5 @@
+ abort = 111
+ abort = 222
+ abort = 333
+-abort = 222
+-abort = 111
++abort = 333
++abort = 333
+--- 00212.c.expected	2022-11-10 13:16:08.317703362 +0800
++++ 00212.c.output	2023-03-08 19:35:50.742673164 +0800
+@@ -1 +1 @@
+-Ok
++KO no __*LP*__ defined.
+Summary
+Total:
+220
+Pass:
+213
+Fail:
+7
+Failed Cases:
+00046.c 00050.c 00162.c 00206.c 00212.c 00216.c 00219.c

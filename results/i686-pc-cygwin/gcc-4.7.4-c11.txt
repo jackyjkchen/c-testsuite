@@ -1,0 +1,16 @@
+CC=i686-pc-cygwin-gcc-4.7.4
+CFLAGS=-std=c11 -O2 -lm -static
+--- 00212.c.expected	2022-11-10 13:16:08.317703362 +0800
++++ 00212.c.output	2023-03-08 19:18:25.795140243 +0800
+@@ -1 +1 @@
+-Ok
++KO no __*LP*__ defined.
+Summary
+Total:
+220
+Pass:
+217
+Fail:
+3
+Failed Cases:
+00212.c 00216.c 00219.c

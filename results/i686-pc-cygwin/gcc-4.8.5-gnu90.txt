@@ -1,0 +1,11 @@
+CC=i686-pc-cygwin-gcc-4.8.5
+CFLAGS=-std=gnu90 -O2 -lm -static
+Summary
+Total:
+220
+Pass:
+215
+Fail:
+5
+Failed Cases:
+00162.c 00206.c 00211.c 00212.c 00219.c

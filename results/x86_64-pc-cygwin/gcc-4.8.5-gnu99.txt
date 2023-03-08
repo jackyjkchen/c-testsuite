@@ -1,0 +1,11 @@
+CC=x86_64-pc-cygwin-gcc-4.8.5
+CFLAGS=-std=gnu99 -O2 -lm -static
+Summary
+Total:
+220
+Pass:
+218
+Fail:
+2
+Failed Cases:
+00216.c 00219.c
