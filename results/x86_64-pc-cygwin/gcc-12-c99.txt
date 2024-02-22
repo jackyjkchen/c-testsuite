@@ -1,4 +1,4 @@
-CC=x86_64-pc-cygwin-gcc-6.5.0
+CC=x86_64-pc-cygwin-gcc-12
 CFLAGS=-std=c99 -O2 -lm
 Summary
 Total:

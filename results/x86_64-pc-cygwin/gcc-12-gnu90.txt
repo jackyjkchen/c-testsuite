@@ -1,4 +1,4 @@
-CC=x86_64-pc-cygwin-gcc-4.9.4
+CC=x86_64-pc-cygwin-gcc-12
 CFLAGS=-std=gnu90 -O2 -lm
 Summary
 Total:
