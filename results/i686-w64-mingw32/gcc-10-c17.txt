@@ -1,5 +1,5 @@
 CC=i686-w64-mingw32-gcc-10
-CFLAGS=-std=c17 -O2 -lm -static
+CFLAGS=-std=c17 -O2 -lm
 Summary
 Total:
 220

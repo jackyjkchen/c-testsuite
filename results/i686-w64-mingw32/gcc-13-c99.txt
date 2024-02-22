@@ -1,0 +1,11 @@
+CC=i686-w64-mingw32-gcc-13
+CFLAGS=-std=c99 -O2 -lm
+Summary
+Total:
+220
+Pass:
+220
+Fail:
+0
+Failed Cases:
+

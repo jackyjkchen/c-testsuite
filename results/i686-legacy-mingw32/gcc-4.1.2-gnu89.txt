@@ -1,5 +1,5 @@
 CC=i686-legacy-mingw32-gcc-4.1.2
-CFLAGS=-std=gnu89 -O2 -lm -static
+CFLAGS=-std=gnu89 -O2 -lm
 --- 00204.c.expected	2022-11-10 13:16:08.315703461 +0800
 +++ 00204.c.output	2023-03-08 19:35:59.834234075 +0800
 @@ -24,14 +24,14 @@

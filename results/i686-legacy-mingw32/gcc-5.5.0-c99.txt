@@ -1,5 +1,5 @@
 CC=i686-legacy-mingw32-gcc-5.5.0
-CFLAGS=-std=c99 -O2 -lm -static
+CFLAGS=-std=c99 -O2 -lm
 --- 00212.c.expected	2022-11-10 13:16:08.317703362 +0800
 +++ 00212.c.output	2023-03-08 19:37:54.177711641 +0800
 @@ -1 +1 @@

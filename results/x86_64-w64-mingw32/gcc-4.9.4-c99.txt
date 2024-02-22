@@ -1,5 +1,5 @@
 CC=x86_64-w64-mingw32-gcc-4.9.4
-CFLAGS=-std=c99 -O2 -lm -static
+CFLAGS=-std=c99 -O2 -lm
 Summary
 Total:
 220
