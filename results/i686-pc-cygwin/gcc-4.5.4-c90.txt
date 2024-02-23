@@ -1,5 +1,5 @@
 CC=i686-pc-cygwin-gcc-4.5.4
-CFLAGS=-std=c90 -O2 -lm -static
+CFLAGS=-std=c90 -O2 -lm
 Summary
 Total:
 220

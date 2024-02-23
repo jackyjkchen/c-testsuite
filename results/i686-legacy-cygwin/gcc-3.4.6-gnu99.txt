@@ -1,0 +1,26 @@
+CC=i686-legacy-cygwin-gcc-3.4.6
+CFLAGS=-std=gnu99 -O2 -lm
+--- 00206.c.expected	2022-11-08 23:35:02.975062173 +0800
++++ 00206.c.output	2024-02-23 23:03:40.961723806 +0800
+@@ -1,5 +1,5 @@
+ abort = 111
+ abort = 222
+ abort = 333
+-abort = 222
+-abort = 111
++abort = 333
++abort = 333
+--- 00212.c.expected	2022-11-08 23:35:02.976062183 +0800
++++ 00212.c.output	2024-02-23 23:03:40.996724174 +0800
+@@ -1 +1 @@
+-Ok
++KO no __*LP*__ defined.
+Summary
+Total:
+220
+Pass:
+215
+Fail:
+5
+Failed Cases:
+00162.c 00206.c 00212.c 00216.c 00219.c
