@@ -1,0 +1,11 @@
+CC=gcc-7.5.0
+CFLAGS=-std=c99 -O2 -lm
+Summary
+Total:
+220
+Pass:
+220
+Fail:
+0
+Failed Cases:
+

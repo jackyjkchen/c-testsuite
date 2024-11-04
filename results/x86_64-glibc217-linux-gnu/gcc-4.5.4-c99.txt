@@ -1,0 +1,11 @@
+CC=gcc-4.5.4
+CFLAGS=-std=c99 -O2 -lm
+Summary
+Total:
+220
+Pass:
+216
+Fail:
+4
+Failed Cases:
+00046.c 00050.c 00216.c 00219.c
