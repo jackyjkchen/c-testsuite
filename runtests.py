@@ -129,8 +129,8 @@ def execute_tests():
     result = {}
     lock = threading.Lock()
     cpu_count = os.cpu_count()
-    if cpu_count > 32:
-        cpu_count = 32
+    if cpu_count >= 16:
+        cpu_count /= 2
     thrd_pool = ThreadPool(cpu_count)
 
     cases = glob.glob('*.c')

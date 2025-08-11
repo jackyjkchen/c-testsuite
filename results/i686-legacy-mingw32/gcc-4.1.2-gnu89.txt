@@ -1,11 +1,21 @@
 CC=i686-legacy-mingw32-gcc-4.1.2
 CFLAGS=-std=gnu89 -O2 -lm
+--- 00206.c.expected	2022-11-08 23:35:02.000000000 +0800
++++ 00206.c.output	2025-08-11 23:13:21.783515888 +0800
+@@ -1,5 +1,5 @@
+ abort = 111
+ abort = 222
+ abort = 333
+-abort = 222
+-abort = 111
++abort = 333
++abort = 333
 Summary
 Total:
 220
 Pass:
-214
+215
 Fail:
-6
+5
 Failed Cases:
-00162.c 00204.c 00206.c 00211.c 00216.c 00219.c
+00162.c 00204.c 00206.c 00216.c 00219.c

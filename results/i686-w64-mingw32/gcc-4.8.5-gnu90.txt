@@ -4,8 +4,8 @@ Summary
 Total:
 220
 Pass:
-216
+218
 Fail:
-4
+2
 Failed Cases:
-00162.c 00206.c 00211.c 00219.c
+00162.c 00219.c

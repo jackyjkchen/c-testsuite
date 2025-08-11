@@ -1,16 +1,11 @@
 CC=gcc-5.5.0
 CFLAGS=-std=gnu99 -O2 -lm
---- 00212.c.expected	2022-11-10 13:16:08.317703362 +0800
-+++ 00212.c.output	2023-02-23 17:22:41.584724834 +0800
-@@ -1 +1 @@
--Ok
-+KO no __*LP*__ defined.
 Summary
 Total:
 220
 Pass:
-219
+220
 Fail:
-1
+0
 Failed Cases:
-00212.c
+
