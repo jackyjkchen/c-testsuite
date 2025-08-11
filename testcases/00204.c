@@ -1,6 +1,10 @@
 // This program is designed to test some arm64-specific things, such as the
 // calling convention, but should give the same results on any architecture.
 
+#if __MINGW32__
+#define __USE_MINGW_ANSI_STDIO
+#endif
+
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>

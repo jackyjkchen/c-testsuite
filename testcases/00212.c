@@ -23,7 +23,7 @@ main()
 	} else {
 		(void)printf("KO __LP64__\n");
 	}
-#elif defined(__ILP32__)
+#else
 	if (sizeof(short) == 2
 	    && sizeof(int) == 4
 	    && sizeof(long int) == 4
@@ -32,7 +32,5 @@ main()
 	} else {
 		(void)printf("KO __ILP32__\n");
 	}
-#else
-	(void)printf("KO no __*LP*__ defined.\n");
 #endif
 }

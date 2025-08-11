@@ -1,0 +1,44 @@
+#!/bin/sh
+
+declare -A GCC_DICT
+
+C99_FLAG="c99"
+GNU99_FLAG="gnu99"
+C90_FLAG="c90"
+GNU90_FLAG="gnu90"
+C89_FLAG="c89"
+GNU89_FLAG="gnu89"
+C9X_FLAG="c9x"
+GNU9X_FLAG="gnu9x"
+TARGET_PREFIX="${TARGET_PREFIX}"
+
+GCC_DICT=(
+  ["14"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["13"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["12"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["11"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["10"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["9.5.0"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["8.5.0"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["7.5.0"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["6.5.0"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["5.5.0"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["4.9.4"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["4.8.5"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["4.7.4"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["4.6.4"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+  ["4.5.4"]="$C99_FLAG $GNU99_FLAG $C90_FLAG $GNU90_FLAG"
+)
+
+for ver in ${!GCC_DICT[@]}
+do
+  cflags=${GCC_DICT[$ver]}
+  for cflag in ${cflags[@]}
+  do
+    echo CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-std=$cflag -O2 -lm" ./runtests_win.py
+    CC="${TARGET_PREFIX}gcc-$ver" CFLAGS="-std=$cflag -O2 -lm" ./runtests_win.py > results/${CC_TARGET}/gcc-$ver-$cflag.txt
+  done
+  echo CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2 -lm -static " ./runtests_win.py
+  CC="${TARGET_PREFIX}g++-$ver" CFLAGS="-O2 -lm -static" ./runtests_win.py > results/${CC_TARGET}/g++-$ver.txt
+done
+
