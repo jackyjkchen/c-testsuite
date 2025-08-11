@@ -33,4 +33,5 @@ main()
 		(void)printf("KO __ILP32__\n");
 	}
 #endif
+    return 0;
 }

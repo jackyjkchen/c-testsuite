@@ -27,4 +27,6 @@ int main()
 
     #pragma pop_macro("abort")
     printf("abort = %s\n", abort);
+
+	return 0;
 }

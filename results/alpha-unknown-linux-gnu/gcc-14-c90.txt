@@ -1,4 +1,4 @@
-CC=i686-legacy-mingw32-gcc-4.9.4
+CC=gcc-14
 CFLAGS=-std=c90 -O2 -lm
 Summary
 Total:

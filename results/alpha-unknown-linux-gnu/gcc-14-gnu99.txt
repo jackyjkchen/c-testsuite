@@ -1,11 +1,11 @@
-CC=i686-legacy-cygwin-gcc-4.3.6
+CC=gcc-14
 CFLAGS=-std=gnu99 -O2 -lm
 Summary
 Total:
 220
 Pass:
-218
+220
 Fail:
-2
+0
 Failed Cases:
-00216.c 00219.c
+
