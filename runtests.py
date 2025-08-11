@@ -128,7 +128,10 @@ def execute_tests():
     os.chdir('testcases')
     result = {}
     lock = threading.Lock()
-    thrd_pool = ThreadPool()
+    cpu_count = os.cpu_count()
+    if cpu_count > 32:
+        cpu_count = 32
+    thrd_pool = ThreadPool(cpu_count)
 
     cases = glob.glob('*.c')
     cases.sort()
